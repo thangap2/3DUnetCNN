@@ -153,7 +153,9 @@ def convert_brats_data(brats_folder, out_folder, overwrite=False, no_bias_correc
     :return:
     """
     dataFolders = glob.glob(os.path.join(brats_folder, "*", "*"))
-    
+    if (len(dataFolders) == 0):
+        print("There are no data files found.")
+        return;
     for subject_folder in dataFolders:
         if os.path.isdir(subject_folder):
             subject = os.path.basename(subject_folder)
