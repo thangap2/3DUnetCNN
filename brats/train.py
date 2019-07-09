@@ -6,8 +6,12 @@ from unet3d.generator import get_training_and_validation_generators
 from unet3d.model import unet_model_3d
 from unet3d.training import load_old_model, train_model
 
+import tensorflow as tf
+tf.reset_default_graph()
+
 
 config = dict()
+config["processed_image_dir"] = "/Users/thanga/Projects/tf-datasets/BRATS2018/data/training-processed"
 config["pool_size"] = (2, 2, 2)  # pool size for the max pooling operations
 config["image_shape"] = (144, 144, 144)  # This determines what shape the images will be cropped/resampled to.
 config["patch_shape"] = (64, 64, 64)  # switch to None to train on the whole image
@@ -48,7 +52,8 @@ config["overwrite"] = False  # If True, will previous files. If False, will use 
 
 def fetch_training_data_files():
     training_data_files = list()
-    for subject_dir in glob.glob(os.path.join(os.path.dirname(__file__), "data", "preprocessed", "*", "*")):
+    path = os.path.join(config["processed_image_dir"], "*", "*")
+    for subject_dir in glob.glob(path):
         subject_files = list()
         for modality in config["training_modalities"] + ["truth"]:
             subject_files.append(os.path.join(subject_dir, modality + ".nii.gz"))
