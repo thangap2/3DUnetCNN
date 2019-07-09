@@ -1,3 +1,3 @@
 from brats.preprocess import convert_brats_data
 
-convert_brats_data("C:\\Workspace\\tf\\datasets\\BRATS2018\\data\\training", "C:\\Workspace\\tf\\datasets\\BRATS2018\\data\\training-processed")
+convert_brats_data("/content/3DUnetCNN/brats/data/original", "/content/3DUnetCNN/brats/data/processed"
