@@ -11,7 +11,7 @@ tf.reset_default_graph()
 
 
 config = dict()
-config["processed_image_dir"] = "/Users/thanga/Projects/tf-datasets/BRATS2018/data/training-processed"
+config["processed_image_dir"] = "/content/3DUnetCNN/brats/data/training-processed/"
 config["pool_size"] = (2, 2, 2)  # pool size for the max pooling operations
 config["image_shape"] = (144, 144, 144)  # This determines what shape the images will be cropped/resampled to.
 config["patch_shape"] = (64, 64, 64)  # switch to None to train on the whole image

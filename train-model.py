@@ -1,2 +1,7 @@
 import tensorflow as tf
 print(tf.__version__)
+
+import brats.train as bratstrain
+bratstrain.main()
+
+
