@@ -142,6 +142,7 @@ def convert_brats_folder(in_folder, out_folder, truth_name='seg', no_bias_correc
 
 
 def convert_brats_data(brats_folder, out_folder, overwrite=False, no_bias_correction_modalities=("flair",)):
+    print("Preprocesses the BRATS data and writes it to a given output folder. Assumes the original folder structure.")
     """
     Preprocesses the BRATS data and writes it to a given output folder. Assumes the original folder structure.
     :param brats_folder: folder containing the original brats data
@@ -152,11 +153,13 @@ def convert_brats_data(brats_folder, out_folder, overwrite=False, no_bias_correc
     or tuple.
     :return:
     """
-    for subject_folder in glob.glob(os.path.join(brats_folder, "*", "*")):
+    dataFolders = glob.glob(os.path.join(brats_folder, "*", "*"))
+    print("The number of data files found:", len(dataFolders))
+    
+    for subject_folder in dataFolders:
         if os.path.isdir(subject_folder):
             subject = os.path.basename(subject_folder)
-            new_subject_folder = os.path.join(out_folder, os.path.basename(os.path.dirname(subject_folder)),
-                                              subject)
+            new_subject_folder = os.path.join(out_folder, os.path.basename(os.path.dirname(subject_folder)), subject)
             if not os.path.exists(new_subject_folder) or overwrite:
                 if not os.path.exists(new_subject_folder):
                     os.makedirs(new_subject_folder)
