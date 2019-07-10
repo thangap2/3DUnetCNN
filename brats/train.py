@@ -65,8 +65,9 @@ def main(overwrite=False):
     # convert input images into an hdf5 file
     if overwrite or not os.path.exists(config["data_file"]):
         training_files = fetch_training_data_files()
-
+        print("Number of Training file Found:", len(training_files))
         write_data_to_file(training_files, config["data_file"], image_shape=config["image_shape"])
+    
     data_file_opened = open_data_file(config["data_file"])
 
     if not overwrite and os.path.exists(config["model_file"]):
