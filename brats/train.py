@@ -11,7 +11,7 @@ tf.reset_default_graph()
 
 
 config = dict()
-config["processed_image_dir"] = "/Users/thanga/Projects/tf-datasets/BRATS2018/data/training-processed"
+config["processed_image_dir"] = "/content/brats2018/data/training-processed/"
 config["pool_size"] = (2, 2, 2)  # pool size for the max pooling operations
 config["image_shape"] = (144, 144, 144)  # This determines what shape the images will be cropped/resampled to.
 config["patch_shape"] = (64, 64, 64)  # switch to None to train on the whole image
@@ -65,14 +65,18 @@ def main(overwrite=False):
     # convert input images into an hdf5 file
     if overwrite or not os.path.exists(config["data_file"]):
         training_files = fetch_training_data_files()
-
+        print("Number of Training file Found:", len(training_files))
         write_data_to_file(training_files, config["data_file"], image_shape=config["image_shape"])
+
+    print("Opening data file.")
     data_file_opened = open_data_file(config["data_file"])
 
     if not overwrite and os.path.exists(config["model_file"]):
+        print("Loading existing model file.")
         model = load_old_model(config["model_file"])
     else:
         # instantiate new model
+        print("Instantiating new model file.")
         model = unet_model_3d(input_shape=config["input_shape"],
                               pool_size=config["pool_size"],
                               n_labels=config["n_labels"],
@@ -80,6 +84,7 @@ def main(overwrite=False):
                               deconvolution=config["deconvolution"])
 
     # get training and testing generators
+    print("Getting training and testing generators.")
     train_generator, validation_generator, n_train_steps, n_validation_steps = get_training_and_validation_generators(
         data_file_opened,
         batch_size=config["batch_size"],
@@ -100,6 +105,7 @@ def main(overwrite=False):
         augment_distortion_factor=config["distort"])
 
     # run training
+    print("Running the training......")
     train_model(model=model,
                 model_file=config["model_file"],
                 training_generator=train_generator,
@@ -112,7 +118,7 @@ def main(overwrite=False):
                 early_stopping_patience=config["early_stop"],
                 n_epochs=config["n_epochs"])
     data_file_opened.close()
-
+    print("Training DONE")
 
 if __name__ == "__main__":
     main(overwrite=config["overwrite"])
